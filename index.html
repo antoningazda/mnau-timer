@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="cs"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mnau časovač</title>
+<style>
+  :root { color-scheme: light dark; --accent: #8b6cf0; }
+  body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; font: 17px -apple-system, system-ui, sans-serif; background: #fff; color: #111; text-align: center; padding: 24px; box-sizing: border-box; }
+  @media (prefers-color-scheme: dark) { body { background: #000; color: #f2f2f2; } }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  p { color: #888; margin: 0 0 22px; }
+  a.btn { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; padding: 15px 28px; border-radius: 14px; }
+</style></head>
+<body><main>
+  <h1 id="t">Mnau časovač</h1>
+  <p id="m">Spouštím zkratku…</p>
+  <a class="btn" id="go" href="#">Spustit časovač</a>
+</main>
+<script>
+  // Opens the "Mnau časovač" shortcut with "minutes|task". Used by Mnau Hub, which cannot open Shortcuts itself.
+  var q = new URLSearchParams(location.search);
+  var mins = Math.max(1, Math.min(240, parseInt(q.get("m"), 10) || 15));
+  var task = (q.get("t") || "").replace(/\|/g, "/").slice(0, 120);
+  var url = "shortcuts://run-shortcut?name=" + encodeURIComponent("Mnau časovač") + "&input=text&text=" + encodeURIComponent(mins + "|" + task);
+  document.getElementById("t").textContent = task || "Mnau časovač";
+  document.getElementById("m").textContent = mins + " min · pokud se Zkratky neotevřou samy, klepni:";
+  document.getElementById("go").href = url;
+  setTimeout(function () { location.href = url; }, 150);
+</script>
+</body></html>
